@@ -1,0 +1,175 @@
+{
+  "info": {
+    "_postman_id": "b69ecde3-9553-47f7-8937-1a252c60ea32",
+    "name": "Contact Assignment",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58534082",
+    "_collection_link": "https://go.postman.co/collection/58534082-b69ecde3-9553-47f7-8937-1a252c60ea32?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get Contact",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "\r\nlet contactResponse = pm.response.json();\r\n\r\nlet contactId = contactResponse.records[0].Id;\r\nlet contactName = contactResponse.records[0].Name;\r\n\r\nconsole.log(contactId)\r\nconsole.log(contactName)\r\n\r\npm.collectionVariables.set(\"ContactId\", contactId);\r\n\r\n"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{Access_Token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{URL}}/services/data/v67.0/query/?q=SELECT Id, Name FROM Contact USING SCOPE MINE",
+          "host": [
+            "{{URL}}"
+          ],
+          "path": [
+            "services",
+            "data",
+            "v67.0",
+            "query",
+            ""
+          ],
+          "query": [
+            {
+              "key": "q",
+              "value": "SELECT Id, Name FROM Contact USING SCOPE MINE"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Contact",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {\r\n    pm.response.to.have.status(204);\r\n});\r\n\r\n"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{Access_Token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"Phone\": \"9876543210\",\r\n    \"Email\": \"updatedmail@test.com\",\r\n    \"Title\": \"Playwirght_Teste\",\r\n    \"Department\": \"QA\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{URL}}/services/data/v67.0/sobjects/Contact/{{ContactId}}",
+          "host": [
+            "{{URL}}"
+          ],
+          "path": [
+            "services",
+            "data",
+            "v67.0",
+            "sobjects",
+            "Contact",
+            "{{ContactId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Contact",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 204\", function () {\r\n    pm.response.to.have.status(204);\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{Access_Token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{URL}}/services/data/v67.0/sobjects/Contact/{{ContactId}}",
+          "host": [
+            "{{URL}}"
+          ],
+          "path": [
+            "services",
+            "data",
+            "v67.0",
+            "sobjects",
+            "Contact",
+            "{{ContactId}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "ContactId",
+      "value": ""
+    }
+  ]
+}

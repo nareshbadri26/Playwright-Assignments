@@ -1,0 +1,247 @@
+{
+  "info": {
+    "_postman_id": "3230278d-97b0-4aa9-8bbe-03cc7192b1b8",
+    "name": "Opportunity Assignment",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58534082",
+    "_collection_link": "https://go.postman.co/collection/58534082-3230278d-97b0-4aa9-8bbe-03cc7192b1b8?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Opportunity",
+      "item": [
+        {
+          "name": "Generate Access Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\r\n\r\n let responseToken = pm.response.json()\r\n\r\n console.log(responseToken)\r\n\r\n let accessToken = responseToken.access_token\r\n\r\n pm.globals.set(\"Access_Token\", accessToken)\r\n\r\n console.log(accessToken)"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                },
+                {
+                  "key": "client_id",
+                  "value": "3MVG91oqviqJKoEH2WZY4ir0zX.8j7ylk5pUCMtx1mcHlc9WlpuVsQl6ccgd0U7ZU7cQRSmTaireiI1j9t.Cn"
+                },
+                {
+                  "key": "client_secret",
+                  "value": "422F81DDDDFCF79B7F41E3026E2C5C659A7A747A5B1403A9C2E99D8FA9E56265"
+                }
+              ]
+            },
+            "url": {
+              "raw": "https://orgfarm-3df1426b47-dev-ed.develop.my.salesforce.com/services/oauth2/token",
+              "protocol": "https",
+              "host": [
+                "orgfarm-3df1426b47-dev-ed",
+                "develop",
+                "my",
+                "salesforce",
+                "com"
+              ],
+              "path": [
+                "services",
+                "oauth2",
+                "token"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Opportunity",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\r\n\r\nlet opportunityRespone = pm.response.json();\r\n\r\nconsole.log(opportunityRespone)\r\n\r\nlet opportunityId = opportunityRespone.id;\r\n\r\npm.globals.set(\"Opportunity_Id\", opportunityId)"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{Access_Token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\r\n    \"CloseDate\" : \"2025-03-15\",\r\n    \"StageName\" : \"API\",\r\n    \"Name\"      : \"Naresh API\"\r\n\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://orgfarm-3df1426b47-dev-ed.develop.my.salesforce.com/services/data/v67.0/sobjects/Opportunity",
+              "protocol": "https",
+              "host": [
+                "orgfarm-3df1426b47-dev-ed",
+                "develop",
+                "my",
+                "salesforce",
+                "com"
+              ],
+              "path": [
+                "services",
+                "data",
+                "v67.0",
+                "sobjects",
+                "Opportunity"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Opportunity",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{Access_Token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "\r\n\r\n{\r\n\r\n    \"Type\" : \"New Customer\",\r\n    \"StageName\": \"Prospecting\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://orgfarm-3df1426b47-dev-ed.develop.my.salesforce.com/services/data/v67.0/sobjects/Opportunity/{{Opportunity_Id}}",
+              "protocol": "https",
+              "host": [
+                "orgfarm-3df1426b47-dev-ed",
+                "develop",
+                "my",
+                "salesforce",
+                "com"
+              ],
+              "path": [
+                "services",
+                "data",
+                "v67.0",
+                "sobjects",
+                "Opportunity",
+                "{{Opportunity_Id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Retrieve Opportunities",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const response = pm.response.json();\r\n\r\nconst firstOpportunityId = response.records[0].Id;\r\n\r\npm.environment.set(\"FirstOpportunityId\", firstOpportunityId);\r\n\r\nconsole.log(\"First Opportunity ID:\", firstOpportunityId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{Access_Token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://orgfarm-3df1426b47-dev-ed.develop.my.salesforce.com/services/data/v67.0/query/?q=SELECT+Id,Name,StageName,Type+FROM+Opportunity USING SCOPE mine",
+              "protocol": "https",
+              "host": [
+                "orgfarm-3df1426b47-dev-ed",
+                "develop",
+                "my",
+                "salesforce",
+                "com"
+              ],
+              "path": [
+                "services",
+                "data",
+                "v67.0",
+                "query",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "SELECT+Id,Name,StageName,Type+FROM+Opportunity USING SCOPE mine"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
